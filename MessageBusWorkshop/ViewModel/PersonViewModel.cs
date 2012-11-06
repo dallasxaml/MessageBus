@@ -11,6 +11,7 @@ namespace MessageBusWorkshop.ViewModel
     public class PersonViewModel : ViewModelBase
     {
         private readonly IPersonService _personService;
+        private int _personId;
 
         public PersonViewModel(IPersonService personService)
         {
@@ -18,6 +19,7 @@ namespace MessageBusWorkshop.ViewModel
 
             MessengerInstance.Register<PersonSelected>(this, delegate (PersonSelected message)
             {
+                _personId = message.PersonId;
                 _personService.LoadPerson(message.PersonId, person =>
                 {
                     FirstName = person.FirstName;
@@ -56,6 +58,13 @@ namespace MessageBusWorkshop.ViewModel
                 RaisePropertyChanging(FirstNamePropertyName);
                 _firstName = value;
                 RaisePropertyChanged(FirstNamePropertyName);
+
+                MessengerInstance.Send(new PersonNameChanged
+                {
+                    PersonId = _personId,
+                    FirstName = FirstName,
+                    LastName = LastName
+                });
             }
         }
 
@@ -87,6 +96,13 @@ namespace MessageBusWorkshop.ViewModel
                 RaisePropertyChanging(LastNamePropertyName);
                 _lastName = value;
                 RaisePropertyChanged(LastNamePropertyName);
+
+                MessengerInstance.Send(new PersonNameChanged
+                {
+                    PersonId = _personId,
+                    FirstName = FirstName,
+                    LastName = LastName
+                });
             }
         }
 

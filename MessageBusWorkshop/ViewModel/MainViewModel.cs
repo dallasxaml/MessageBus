@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Threading;
 using MessageBusWorkshop.Model;
 using MessageBusWorkshop.Messages;
+using System.Linq;
 
 namespace MessageBusWorkshop.ViewModel
 {
@@ -27,9 +28,18 @@ namespace MessageBusWorkshop.ViewModel
                         _people.Add(new PersonHeaderViewModel
                         {
                             Id = person.Id,
-                            FullName = String.Format("{0}, {1}", person.LastName, person.FirstName)
+                            FullName = String.Format("{0}, {1}",
+                                person.LastName,
+                                person.FirstName)
                         });
                 });
+            });
+
+            MessengerInstance.Register<PersonNameChanged>(this, message =>
+            {
+                var person = _people.FirstOrDefault(p => p.Id == message.PersonId);
+                if (person != null)
+                    person.FullName = String.Format("{0}, {1}", message.LastName, message.FirstName);
             });
         }
 
