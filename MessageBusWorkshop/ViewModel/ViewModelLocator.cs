@@ -1,19 +1,6 @@
-/*
-  In App.xaml:
-  <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:MessageBusWorkshop"
-                           x:Key="Locator" />
-  </Application.Resources>
-  
-  In the View:
-  DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
-
-  You can also use Blend to do all this with the tool's support.
-  See http://www.galasoft.ch/mvvm
-*/
-
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Threading;
+using MessageBusWorkshop.Model;
 using Microsoft.Practices.ServiceLocation;
 
 namespace MessageBusWorkshop.ViewModel
@@ -29,20 +16,12 @@ namespace MessageBusWorkshop.ViewModel
         /// </summary>
         public ViewModelLocator()
         {
+            DispatcherHelper.Initialize();
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            ////if (ViewModelBase.IsInDesignModeStatic)
-            ////{
-            ////    // Create design time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DesignDataService>();
-            ////}
-            ////else
-            ////{
-            ////    // Create run time view services and models
-            ////    SimpleIoc.Default.Register<IDataService, DataService>();
-            ////}
-
+            SimpleIoc.Default.Register<IPersonService, PersonService>();
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<PersonViewModel>();
         }
 
         public MainViewModel Main
@@ -50,6 +29,14 @@ namespace MessageBusWorkshop.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
+            }
+        }
+
+        public PersonViewModel Person
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<PersonViewModel>();
             }
         }
         
