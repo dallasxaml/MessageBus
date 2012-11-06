@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Threading;
 using MessageBusWorkshop.Model;
-using MessageBusWorkshop.Messages;
 using System.Linq;
 
 namespace MessageBusWorkshop.ViewModel
@@ -33,13 +32,6 @@ namespace MessageBusWorkshop.ViewModel
                                 person.FirstName)
                         });
                 });
-            });
-
-            MessengerInstance.Register<PersonNameChanged>(this, message =>
-            {
-                var person = _people.FirstOrDefault(p => p.Id == message.PersonId);
-                if (person != null)
-                    person.FullName = String.Format("{0}, {1}", message.LastName, message.FirstName);
             });
         }
 
@@ -76,11 +68,6 @@ namespace MessageBusWorkshop.ViewModel
                 RaisePropertyChanging(SelectedPersonPropertyName);
                 _selectedPerson = value;
                 RaisePropertyChanged(SelectedPersonPropertyName);
-
-                MessengerInstance.Send(new PersonSelected
-                {
-                    PersonId = value.Id
-                });
             }
         }
     }

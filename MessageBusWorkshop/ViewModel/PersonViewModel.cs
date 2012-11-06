@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
-using MessageBusWorkshop.Messages;
 using MessageBusWorkshop.Model;
 
 namespace MessageBusWorkshop.ViewModel
@@ -16,18 +15,6 @@ namespace MessageBusWorkshop.ViewModel
         public PersonViewModel(IPersonService personService)
         {
             _personService = personService;
-
-            MessengerInstance.Register<PersonSelected>(this, delegate (PersonSelected message)
-            {
-                _personId = message.PersonId;
-                _personService.LoadPerson(message.PersonId, person =>
-                {
-                    FirstName = person.FirstName;
-                    LastName = person.LastName;
-                    Email = person.Email;
-                    Phone = person.Phone;
-                });
-            });
         }
 
         /// <summary>
@@ -58,13 +45,6 @@ namespace MessageBusWorkshop.ViewModel
                 RaisePropertyChanging(FirstNamePropertyName);
                 _firstName = value;
                 RaisePropertyChanged(FirstNamePropertyName);
-
-                MessengerInstance.Send(new PersonNameChanged
-                {
-                    PersonId = _personId,
-                    FirstName = FirstName,
-                    LastName = LastName
-                });
             }
         }
 
@@ -96,13 +76,6 @@ namespace MessageBusWorkshop.ViewModel
                 RaisePropertyChanging(LastNamePropertyName);
                 _lastName = value;
                 RaisePropertyChanged(LastNamePropertyName);
-
-                MessengerInstance.Send(new PersonNameChanged
-                {
-                    PersonId = _personId,
-                    FirstName = FirstName,
-                    LastName = LastName
-                });
             }
         }
 

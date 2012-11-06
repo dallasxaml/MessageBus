@@ -69,8 +69,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Messages\PersonNameChanged.cs" />
-    <Compile Include="Messages\PersonSelected.cs" />
     <Compile Include="Model\IPersonService.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\PersonService.cs" />
