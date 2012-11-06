@@ -25,9 +25,9 @@ namespace MessageBusWorkshop.Model
                 {
                     Id = 2,
                     FirstName = "Kate",
-                    LastName = "Becket",
+                    LastName = "Beckett",
                     Phone = "555-2981",
-                    Email = "Kate.Becket@nypd.gov"
+                    Email = "Kate.Beckett@nypd.gov"
                 },
                 new Person
                 {
