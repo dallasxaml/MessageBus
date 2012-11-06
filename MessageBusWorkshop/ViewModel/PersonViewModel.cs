@@ -3,11 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
+using MessageBusWorkshop.Messages;
+using MessageBusWorkshop.Model;
 
 namespace MessageBusWorkshop.ViewModel
 {
     public class PersonViewModel : ViewModelBase
     {
+        private readonly IPersonService _personService;
+
+        public PersonViewModel(IPersonService personService)
+        {
+            _personService = personService;
+
+            MessengerInstance.Register<PersonSelected>(this, delegate (PersonSelected message)
+            {
+                _personService.LoadPerson(message.PersonId, person =>
+                {
+                    FirstName = person.FirstName;
+                    LastName = person.LastName;
+                    Email = person.Email;
+                    Phone = person.Phone;
+                });
+            });
+        }
+
         /// <summary>
         /// The <see cref="FirstName" /> property's name.
         /// </summary>

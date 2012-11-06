@@ -8,6 +8,8 @@ namespace MessageBusWorkshop.ViewModel
 {
     public class PersonHeaderViewModel : ViewModelBase
     {
+        public int Id { get; set; }
+        
         /// <summary>
         /// The <see cref="FullName" /> property's name.
         /// </summary>
