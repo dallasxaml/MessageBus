@@ -19,20 +19,21 @@ namespace MessageBusWorkshop.ViewModel
             _personService = personService;
 
             _people = new ObservableCollection<PersonHeaderViewModel>();
-            _personService.LoadPeople(people =>
-            {
-                DispatcherHelper.CheckBeginInvokeOnUI(delegate
-                {
-                    foreach (var person in people)
-                        _people.Add(new PersonHeaderViewModel
-                        {
-                            Id = person.Id,
-                            FullName = String.Format("{0}, {1}",
-                                person.LastName,
-                                person.FirstName)
-                        });
-                });
-            });
+            var task = _personService.LoadPeople();
+            task.ContinueWith(t =>
+             {
+                 DispatcherHelper.CheckBeginInvokeOnUI(delegate
+                 {
+                     foreach (var person in t.Result)
+                         _people.Add(new PersonHeaderViewModel
+                         {
+                             Id = person.Id,
+                             FullName = String.Format("{0}, {1}",
+                                 person.LastName,
+                                 person.FirstName)
+                         });
+                 });
+             });
         }
 
         public IEnumerable<PersonHeaderViewModel> People

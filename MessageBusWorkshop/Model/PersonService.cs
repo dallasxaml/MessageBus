@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MessageBusWorkshop.Model
 {
@@ -48,21 +49,22 @@ namespace MessageBusWorkshop.Model
             };
         }
 
-        public void LoadPeople(Action<IEnumerable<Person>> callback)
+        public Task<IEnumerable<Person>> LoadPeople()
         {
-            ThreadPool.QueueUserWorkItem(delegate
+            return Task.Factory.StartNew<IEnumerable<Person>>(delegate
             {
                 Thread.Sleep(2000);
-                callback(_personTable);
+
+                return _personTable;
             });
         }
 
-        public void LoadPerson(int personId, Action<Person> callback)
+        public Task<Person> LoadPerson(int personId)
         {
-            ThreadPool.QueueUserWorkItem(delegate
+            return Task.Factory.StartNew<Person>(delegate
             {
                 Thread.Sleep(1000);
-                callback(_personTable.FirstOrDefault(p => p.Id == personId));
+                return _personTable.FirstOrDefault(p => p.Id == personId);
             });
         }
     }

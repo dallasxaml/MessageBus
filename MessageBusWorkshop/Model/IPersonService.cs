@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MessageBusWorkshop.Model
 {
     public interface IPersonService
     {
-        void LoadPeople(Action<IEnumerable<Person>> callback);
-        void LoadPerson(int personId, Action<Person> callback);
+        Task<IEnumerable<Person>> LoadPeople();
+        Task<Person> LoadPerson(int personId);
     }
 }
