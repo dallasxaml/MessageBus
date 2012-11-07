@@ -20,6 +20,7 @@ namespace MessageBusWorkshop.ViewModel
 
             MessengerInstance.Register<PersonSelected>(this, message =>
             {
+                _personId = message.PersonId;
                 var task = _personService.LoadPerson(message.PersonId);
                 task.ContinueWith(t =>
                 {
@@ -63,6 +64,8 @@ namespace MessageBusWorkshop.ViewModel
                 RaisePropertyChanging(FirstNamePropertyName);
                 _firstName = value;
                 RaisePropertyChanged(FirstNamePropertyName);
+
+                SendPersonNameChanged();
             }
         }
 
@@ -94,6 +97,8 @@ namespace MessageBusWorkshop.ViewModel
                 RaisePropertyChanging(LastNamePropertyName);
                 _lastName = value;
                 RaisePropertyChanged(LastNamePropertyName);
+
+                SendPersonNameChanged();
             }
         }
 
@@ -157,6 +162,16 @@ namespace MessageBusWorkshop.ViewModel
                 _phone = value;
                 RaisePropertyChanged(PhonePropertyName);
             }
+        }
+
+        private void SendPersonNameChanged()
+        {
+            MessengerInstance.Send(new PersonNameChanged
+            {
+                PersonId  = this._personId,
+                FirstName = this.FirstName,
+                LastName  = this.LastName
+            });
         }
     }
 }
