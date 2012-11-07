@@ -9,7 +9,8 @@
     		<RowDefinition Height="0.849*"/>
     		<RowDefinition Height="Auto"/>
     	</Grid.RowDefinitions>
-		<ListBox Margin="5,5,5,0" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" >
+		<ListBox Margin="5,5,5,0" ItemsSource="{Binding People}"
+                 SelectedItem="{Binding SelectedPerson}" >
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding FullName}" />
