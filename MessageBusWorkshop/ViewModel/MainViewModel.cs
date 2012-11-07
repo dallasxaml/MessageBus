@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Threading;
 using MessageBusWorkshop.Model;
 using System.Linq;
+using MessageBusWorkshop.Messages;
 
 namespace MessageBusWorkshop.ViewModel
 {
@@ -69,6 +70,11 @@ namespace MessageBusWorkshop.ViewModel
                 RaisePropertyChanging(SelectedPersonPropertyName);
                 _selectedPerson = value;
                 RaisePropertyChanged(SelectedPersonPropertyName);
+
+                MessengerInstance.Send(new PersonSelected
+                {
+                    PersonId = value.Id
+                });
             }
         }
     }
