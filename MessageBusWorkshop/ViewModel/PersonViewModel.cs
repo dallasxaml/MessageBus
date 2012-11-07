@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
 using MessageBusWorkshop.Model;
+using MessageBusWorkshop.Messages;
+using GalaSoft.MvvmLight.Threading;
 
 namespace MessageBusWorkshop.ViewModel
 {
@@ -15,6 +17,22 @@ namespace MessageBusWorkshop.ViewModel
         public PersonViewModel(IPersonService personService)
         {
             _personService = personService;
+
+            MessengerInstance.Register<PersonSelected>(this, message =>
+            {
+                var task = _personService.LoadPerson(message.PersonId);
+                task.ContinueWith(t =>
+                {
+                    Person person = t.Result;
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        FirstName = person.FirstName;
+                        LastName = person.LastName;
+                        Email = person.Email;
+                        Phone = person.Phone;
+                    });
+                });
+            });
         }
 
         /// <summary>
