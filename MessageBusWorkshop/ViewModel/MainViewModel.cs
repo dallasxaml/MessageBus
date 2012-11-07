@@ -35,6 +35,16 @@ namespace MessageBusWorkshop.ViewModel
                          });
                  });
              });
+
+            MessengerInstance.Register<PersonNameChanged>(this, message =>
+            {
+                var person = _people.FirstOrDefault(p =>
+                    p.Id == message.PersonId);
+                if (person != null)
+                    person.FullName = String.Format("{0}, {1}",
+                        message.LastName,
+                        message.FirstName)
+            });
         }
 
         public IEnumerable<PersonHeaderViewModel> People
